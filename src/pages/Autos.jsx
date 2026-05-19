@@ -8,7 +8,7 @@ export default function Autos() {
   const [brand, setBrand] = useState("")
   const [model, setModel] = useState("")
   const [color, setColor] = useState("")
-  const [maxPrice, setMaxPrice] = useState(30000000)
+  const [maxPrice, setMaxPrice] = useState(35000000)
   const [orderPrice, setOrderPrice] = useState("desc")
   const [selectedAuto, setSelectedAuto] = useState(null)
   const [favorites, setFavorites] = useState([])
@@ -64,8 +64,8 @@ export default function Autos() {
         </div>
 
         {/* LISTA DE AUTOS */}
-        <div className="lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {autosUsados.map(auto => (
+        <div className="lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          {filteredAutos.map(auto => (
             <AutoCard1
               key={auto.id}
               auto={auto}

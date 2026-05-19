@@ -2,20 +2,20 @@ import { CarFront } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-black text-gray-300">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 py-6 sm:flex-row sm:justify-between">
 
         {/* Logo + nombre */}
         <div className="flex items-center gap-2">
-          <CarFront size={28} strokeWidth={1.25} className="text-white" />
+          {/* <CarFront size={28} strokeWidth={1.25} className="text-white" /> */}
           <span className="text-lg font-semibold text-white">
-            Automotor BC
+            [logo]+[nombre del automotor]
           </span>
         </div>
 
         {/* Texto central */}
         <p className="text-sm text-gray-400">
-          © {new Date().getFullYear()} Automotor BC · creado por BC
+          © {new Date().getFullYear()} [nombre del automotor] · creado por BC
         </p>
 
         {/* Redes */}

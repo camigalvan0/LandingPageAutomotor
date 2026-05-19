@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import autosUsados from "../data/AutosUsados"
 
 import {
@@ -7,7 +8,10 @@ import {
   Zap,
   Settings,
   Fuel,
-  Phone
+  MapPin,
+  Repeat,
+  Car,
+  X
 } from "lucide-react"
 
 const WHATSAPP_URL =
@@ -20,17 +24,9 @@ export default function AutoDetalle() {
   const [index, setIndex] = useState(0)
   const [zoom, setZoom] = useState(false)
   const [origin, setOrigin] = useState("center")
+  const [lightbox, setLightbox] = useState(false)
 
-  if (!auto) {
-    return (
-      <div className="p-10 text-center">
-        <p>Auto no encontrado</p>
-        <Link to="/Autos" className="text-red-600 underline">
-          Volver
-        </Link>
-      </div>
-    )
-  }
+  if (!auto) return <p>Auto no encontrado</p>
 
   const handleMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -39,124 +35,159 @@ export default function AutoDetalle() {
     setOrigin(`${x}% ${y}%`)
   }
 
+  const next = () =>
+    setIndex((prev) => (prev + 1) % auto.images.length)
+
+  const prev = () =>
+    setIndex((prev) => (prev - 1 + auto.images.length) % auto.images.length)
+
   return (
-    <section className="max-w-6xl mx-auto px-6 py-16">
-      <Link to="/Autos" className="text-red-600 underline">
+    <section className="max-w-7xl mx-auto px-4 py-18">
+
+      <Link to="/Autos" className="text-red-600 font-medium">
         ← Volver
       </Link>
 
-      <div className="grid md:grid-cols-2 gap-10 mt-6 items-start">
+      {/* HEADER */}
+      
 
-        {/* ✅ GALERÍA */}
-        <div>
+      {/* CONTENIDO */}
+      <div className="flex flex-col items-center gap-10">
+
+        {/* 🔍 GALERÍA */}
+        <div className="w-full max-w-3xl">
+
           <div
             className="overflow-hidden rounded-xl cursor-zoom-in"
             onMouseEnter={() => setZoom(true)}
             onMouseLeave={() => setZoom(false)}
             onMouseMove={handleMove}
+            onClick={() => setLightbox(true)}
           >
-            <img
+            <motion.img
+              key={index}
               src={auto.images[index]}
-              alt={auto.name}
-              className={`w-full h-[420px] object-cover transition-transform duration-300 ${
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className={`w-full h-[280px] md:h-[450px] object-cover transition-transform duration-300 ${
                 zoom ? "scale-150" : "scale-100"
               }`}
               style={{ transformOrigin: origin }}
             />
           </div>
 
-          <div className="flex gap-3 mt-4">
+          {/* THUMBNAILS */}
+          <div className="flex gap-2 mt-3 overflow-x-auto justify-center">
             {auto.images.map((img, i) => (
               <img
                 key={i}
                 src={img}
                 onClick={() => setIndex(i)}
-                className={`h-20 w-28 object-cover rounded-lg cursor-pointer border-2 ${
-                  index === i ? "border-red-600" : "border-transparent"
+                className={`h-16 w-24 object-cover rounded-lg cursor-pointer border-2 ${
+                  index === i ? "border-red-600" : "border-gray-200"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        {/* ✅ CARD INFO PREMIUM */}
-        <div className="bg-[#0f1115] text-white rounded-2xl p-8 shadow-xl">
+        {/* INFO */}
+        <div className="w-full max-w-3xl bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-6 text-center">
 
-          {/* Título */}
-          <h1 className="text-3xl font-bold mb-2">{auto.name}</h1>
-
-          <span className="inline-block bg-red-600 text-sm px-3 py-1 rounded-full mb-6">
-            Disponible
-          </span>
-
-          {/* Ficha técnica */}
-          <h3 className="text-lg font-semibold mb-4 text-gray-300">
-            Ficha Técnica
-          </h3>
-
-          <div className="space-y-4">
-
-            <Spec icon={<Calendar size={18} />} label="Año" value={auto.year} />
-
-            <Spec
-              icon={<Zap size={18} />}
-              label="Kilómetros"
-              value={`${auto.km.toLocaleString()} km`}
-            />
-
-            <Spec
-              icon={<Settings size={18} />}
-              label="Transmisión"
-              value={auto.transmission || "Manual"}
-            />
-
-            <Spec
-              icon={<Fuel size={18} />}
-              label="Combustible"
-              value={auto.fuel || "Nafta"}
-            />
-          </div>
-
-          {/* Precio */}
-          <div className="bg-white/5 rounded-xl p-5 mt-6">
-            <p className="text-gray-400 text-sm">Precio</p>
-            <p className="text-3xl font-bold">
-              $ {auto.price.toLocaleString("es-AR")}
-            </p>
-          </div>
-
-          {/* CTA */}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            className="block text-center bg-red-600 hover:bg-red-700 transition mt-6 py-4 rounded-xl font-semibold"
-          >
-            Reservar Cita
-          </a>
-
-          {/* Teléfono */}
-          <div className="text-center mt-6 text-sm text-gray-400">
-            ¿Necesitás más información?
-            <div className="flex items-center justify-center gap-2 mt-2 text-red-500 font-semibold">
-              <Phone size={16} />
-              +54 9 123456789
+          <div className="flex justify-between">
+            <div className="mb-8 text-start">
+              <h1 className="text-xl md:text-3xl font-bold">{auto.name}</h1>
+              <p className="text-gray-500 text-md">
+                {auto.year} · {auto.km.toLocaleString()} km
+              </p>
             </div>
+            <div className="text-3xl md:text-4xl font-bold text-red-600">
+              $ {auto.price.toLocaleString("es-AR")}
+            </div>  
+          </div>
+          
+
+          <p className="text-gray-600">
+          {auto.description}
+          </p>
+
+          {/* SPECS */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
+            <SpecCard icon={<Settings />} label="Motor" value="2.8 TD 204CV" />
+            <SpecCard icon={<Fuel />} label="Combustible" value={auto.fuel || "Nafta"} />
+            <SpecCard icon={<MapPin />} label="Km" value={`${auto.km.toLocaleString()}`} />
+            <SpecCard icon={<Repeat />} label="Transmisión" value={auto.transmission || "Manual"} />
+            <SpecCard icon={<Car />} label="Puertas" value="5" />
+            <SpecCard icon={<Calendar />} label="Año" value={auto.model} />
+            <SpecCard icon={<Zap />} label="Color" value="Blanco Perla" />
+            <SpecCard icon={<Car />} label="Dueños" value="1" />
           </div>
         </div>
       </div>
+
+      {/* CTA */}
+      <div className="mt-12 max-w-3xl mx-auto">
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          className="block w-full text-center bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl text-lg font-semibold shadow-lg transition"
+        >
+          Consultar por WhatsApp
+        </a>
+      </div>
+
+      {/* 🖼️ LIGHTBOX */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Cerrar */}
+            <button
+              onClick={() => setLightbox(false)}
+              className="absolute top-6 right-6 text-white"
+            >
+              <X size={30} />
+            </button>
+
+            {/* Imagen swipe */}
+            <motion.img
+              key={index}
+              src={auto.images[index]}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={(e, info) => {
+                if (info.offset.x < -100) next()
+                if (info.offset.x > 100) prev()
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="max-h-[80vh] max-w-[90vw] object-contain"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   )
 }
 
-/* ✅ Subcomponente fila ficha técnica */
-function Spec({ icon, label, value }) {
+/* CARD */
+function SpecCard({ icon, label, value }) {
   return (
-    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-      <div className="flex items-center gap-3 text-gray-300">
-        <span className="text-red-500">{icon}</span>
-        {label}
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="bg-gray-100 rounded-xl p-3 flex items-center gap-3"
+    >
+      <div className="text-red-600">{icon}</div>
+      <div>
+        <p className="text-xs text-gray-500">{label}</p>
+        <p className="font-semibold">{value}</p>
       </div>
-      <span className="font-semibold">{value}</span>
-    </div>
+    </motion.div>
   )
 }

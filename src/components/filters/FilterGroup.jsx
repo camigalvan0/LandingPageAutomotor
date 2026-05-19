@@ -53,10 +53,10 @@ export default function FilterGroup({
         <input
           type="range"
           min="5000000"
-          max="30000000"
+          max="35000000"
           step="500000"
           value={maxPrice}
-          onChange={e => setMaxPrice(e.target.value)}
+          onChange={e => setMaxPrice(Number(e.target.value))}
           className="w-full accent-red-600"
         />
         <span className="text-sm text-gray-500">

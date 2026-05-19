@@ -10,10 +10,12 @@ import Clientes from './pages/Clientes'
 import Contacto from './pages/Contacto'
 import Footer from './components/Footer'
 import AutoDetalle from './pages/AutoDetalle.jsx'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Header/>
 
       <Routes>

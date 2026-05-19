@@ -8,8 +8,8 @@ import { CarFront } from 'lucide-react'
 const navigation = [
   { name: 'Inicio', to: '/' },
   { name: '0 KM', to: '/Autos0KM' },
-  { name: 'Autos', to: '/Autos' },
-  { name: 'Usados', to: '/AutosUsados' },
+  { name: 'Autos Usados', to: '/Autos' },
+  // { name: 'Usados', to: '/AutosUsados' },
   { name: 'Clientes', to: '/Clientes' },
   { name: 'Sobre Nosotros', to: '/SobreNosotros' },
   { name: 'Contacto', to: '/Contacto' }
@@ -24,7 +24,8 @@ export default function Header() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <CarFront size={30} strokeWidth={1.25} className='text-white' />
+              <p className='text-gray-400'>[logo]</p>
+              {/* <CarFront size={30} strokeWidth={1.25} className='text-white' /> */}
               {/* <img
                 src={logo}
                 alt="logo"

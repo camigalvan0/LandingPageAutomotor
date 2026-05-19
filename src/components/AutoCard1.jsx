@@ -16,6 +16,7 @@ export default function AutoCard1({ auto, favorites, toggleFav }) {
         shadow-md hover:shadow-xl
         transition-all duration-300
         hover:-translate-y-1
+        flex flex-col h-full
       "
     >
       {/* IMAGEN */}
@@ -57,7 +58,7 @@ export default function AutoCard1({ auto, favorites, toggleFav }) {
       </div>
 
       {/* CONTENIDO */}
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-3 flex flex-col flex-1">
         <div>
           <h3 className="font-semibold text-base">
             {auto.name}
@@ -71,7 +72,7 @@ export default function AutoCard1({ auto, favorites, toggleFav }) {
         <div className="flex gap-4 text-sm text-gray-600">
           <span className="flex items-center gap-1">
             <Calendar size={16} />
-            {auto.year}
+            {auto.model}
           </span>
 
           <span className="flex items-center gap-1">
@@ -81,7 +82,7 @@ export default function AutoCard1({ auto, favorites, toggleFav }) {
         </div>
 
         {/* PRECIO + CTA */}
-        <div className="flex justify-between items-center pt-2">
+        <div className="flex justify-between items-center pt-2 mt-auto">
           <span className="text-xl font-bold text-[#E00B0B]">
             ${auto.price.toLocaleString("es-AR")}
           </span>
