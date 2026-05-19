@@ -12,7 +12,7 @@ export default function AutosUsados() {
   const [brand, setBrand] = useState("")
   const [model, setModel] = useState("")
   const [color, setColor] = useState("")
-  const [maxPrice, setMaxPrice] = useState(20000000)
+  // const [maxPrice, setMaxPrice] = useState(20000000)
   const [order, setOrder] = useState("")
   const [favorites, setFavorites] = useState([])
   const [selectedAuto, setSelectedAuto] = useState(null)

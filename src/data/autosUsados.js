@@ -10,7 +10,7 @@ const autosUsados = [
     description:
       "Peugeot 208 en excelente estado, único dueño, servicios oficiales.",
     images: [
-      "/autos/peugeot208/1.png",
+      "../autos/peugeot208/1.png",
       "/autos/peugeot208/2.png",
       "/autos/peugeot208/3.png",
     ],
