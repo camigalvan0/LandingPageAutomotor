@@ -1,76 +1,81 @@
 import { useState } from "react"
-import AutoModal2 from "../components/AutoModal2"
-import AutoCard from "../components/AutoCard"
-import Filters from "../components/Filters"
+import FilterGroup from "../components/filters/FilterGroup"
 import autosUsados from "../data/AutosUsados"
-// import AutoModal from "../components/AutoModal"
-
-  
+import AutoCard1 from "../components/AutoCard1"
+import AutoModal2 from "../components/AutoModal2"
 
 export default function AutosUsados() {
-  const [search, setSearch] = useState("")
   const [brand, setBrand] = useState("")
   const [model, setModel] = useState("")
   const [color, setColor] = useState("")
-  // const [maxPrice, setMaxPrice] = useState(20000000)
-  const [order, setOrder] = useState("")
-  const [favorites, setFavorites] = useState([])
+  // const [maxPrice, setMaxPrice] = useState(35000000)
+  const [orderPrice, setOrderPrice] = useState("desc")
   const [selectedAuto, setSelectedAuto] = useState(null)
+  const [favorites, setFavorites] = useState([])
 
-  let autos = autosUsados.filter(a =>
-    a.name.toLowerCase().includes(search.toLowerCase()) &&
-    (brand === "" || a.brand === brand) &&
-    (model === "" || a.model === model) &&
-    (color === "" || a.color === color) &&
-    a.price <= maxPrice
-  )
-
-  if (order === "price-asc") autos.sort((a,b) => a.price - b.price)
-  if (order === "price-desc") autos.sort((a,b) => b.price - a.price)
-  if (order === "km") autos.sort((a,b) => a.km - b.km)
+  const filteredAutos = autosUsados
+    .filter(auto =>
+      (brand === "" || auto.brand === brand) &&
+      (model === "" || auto.model.toLowerCase().includes(model.toLowerCase())) &&
+      (color === "" || auto.color === color) &&
+      auto.price <= maxPrice
+    )
+    .sort((a, b) => {
+      return orderPrice === "asc"
+        ? a.price - b.price
+        : b.price - a.price
+    })
 
   const toggleFav = (id) =>
     setFavorites(favorites.includes(id)
     ? favorites.filter(f => f !== id)
     : [...favorites, id]
   )
-  
   return (
-    <>
-      <section className="bg-gray-100 py-20">
-        <div className="max-w-7xl mx-auto px-6 my-4 flex gap-8 flex-col lg:flex-row">
-          <div className="lg:w-1/4">
-            <FilterGroup
-                        brand={brand}
-                        setBrand={setBrand}
-                        model={model}
-                        setModel={setModel}
-                        color={color}
-                        setColor={setColor}
-                        maxPrice={maxPrice}
-                        setMaxPrice={setMaxPrice}
-                      />
-          </div>
+    <section className="bg-gray-100 py-20">
 
-          <div className="lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {autos.map(auto => (
-              <AutoCard
-                key={auto.id}
-                auto={auto}
-                onOpen={setSelectedAuto}
-                favorites={favorites}
-                toggleFav={toggleFav}
-              />
-            ))}
-          </div>
+      {/* ORDEN */}
+      <div className="max-w-7xl mx-auto px-6 mb-6 flex justify-end">
+        <select
+          value={orderPrice}
+          onChange={(e) => setOrderPrice(e.target.value)}
+          className="bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm shadow-sm"
+        >
+          <option value="desc">Precio: mayor a menor</option>
+          <option value="asc">Precio: menor a mayor</option>
+        </select>
+      </div>
+
+
+      <div className="max-w-7xl mx-auto px-6 my-4 flex gap-8 flex-col lg:flex-row">
+
+        {/* FILTROS */}
+        <div className="lg:col-span-1">
+          <FilterGroup
+            brand={brand}
+            setBrand={setBrand}
+            model={model}
+            setModel={setModel}
+            color={color}
+            setColor={setColor}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+          />
         </div>
-      </section>
 
-        {/* MODAL */}
-        <AutoModal2
-          auto={selectedAuto}
-          onClose={() => setSelectedAuto(null)}
-        />
-    </>
+        {/* LISTA DE AUTOS */}
+        <div className="lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          {filteredAutos.map(auto => (
+            <AutoCard1
+              key={auto.id}
+              auto={auto}
+              onOpen={setSelectedAuto}
+              favorites={favorites}
+              toggleFav={toggleFav}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }

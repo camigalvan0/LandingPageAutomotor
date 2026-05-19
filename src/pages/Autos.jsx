@@ -3,17 +3,18 @@ import FilterGroup from "../components/filters/FilterGroup"
 import autosUsados from "../data/AutosUsados"
 import AutoCard1 from "../components/AutoCard1"
 import AutoModal2 from "../components/AutoModal2"
+import autos0km from "../data/autos0km"
 
 export default function Autos() {
   const [brand, setBrand] = useState("")
   const [model, setModel] = useState("")
   const [color, setColor] = useState("")
-  // const [maxPrice, setMaxPrice] = useState(35]000000)
+  // const [maxPrice, setMaxPrice] = useState(35000000)
   const [orderPrice, setOrderPrice] = useState("desc")
   const [selectedAuto, setSelectedAuto] = useState(null)
   const [favorites, setFavorites] = useState([])
 
-  const filteredAutos = autosUsados
+  const filteredAutos = autos0km
     .filter(auto =>
       (brand === "" || auto.brand === brand) &&
       (model === "" || auto.model.toLowerCase().includes(model.toLowerCase())) &&
