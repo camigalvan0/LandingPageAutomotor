@@ -8,7 +8,7 @@ export default function Autos() {
   const [brand, setBrand] = useState("")
   const [model, setModel] = useState("")
   const [color, setColor] = useState("")
-  const [maxPrice, setMaxPrice] = useState(35000000)
+  // const [maxPrice, setMaxPrice] = useState(35]000000)
   const [orderPrice, setOrderPrice] = useState("desc")
   const [selectedAuto, setSelectedAuto] = useState(null)
   const [favorites, setFavorites] = useState([])
