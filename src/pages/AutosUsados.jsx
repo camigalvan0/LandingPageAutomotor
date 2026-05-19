@@ -40,10 +40,16 @@ export default function AutosUsados() {
       <section className="bg-gray-100 py-20">
         <div className="max-w-7xl mx-auto px-6 my-4 flex gap-8 flex-col lg:flex-row">
           <div className="lg:w-1/4">
-            <Filters {...{
-              search,setSearch,brand,setBrand,model,setModel,
-              color,setColor,maxPrice,setMaxPrice,order,setOrder
-            }} />
+            <FilterGroup
+                        brand={brand}
+                        setBrand={setBrand}
+                        model={model}
+                        setModel={setModel}
+                        color={color}
+                        setColor={setColor}
+                        maxPrice={maxPrice}
+                        setMaxPrice={setMaxPrice}
+                      />
           </div>
 
           <div className="lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
